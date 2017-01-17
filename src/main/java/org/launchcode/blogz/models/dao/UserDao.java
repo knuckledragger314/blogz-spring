@@ -14,8 +14,12 @@ public interface UserDao extends CrudRepository<User, Integer> {
 
     User findByUid(int uid);
     
+    User findByUsername(String username);
+    
     List<User> findAll();
     
     // TODO - add method signatures as needed
-
+  //errors on starting up Spring Boot caused by these two lines of code:
+    
+    //User findByPassword(String password);
 }

@@ -17,12 +17,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Table(name = "user")
 public class User extends AbstractEntity {
 
+	//won't need to mess with this class
+	//has all the stuff we need!
+	
 	private String username;
 	private String pwHash;
 	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
+	//all the posts by a given user
 	private List<Post> posts;
 	
+	//no arg constructor, does nothing, just for Hibernate
 	public User() {}
 	
 	public User(String username, String password) {
@@ -63,17 +68,22 @@ public class User extends AbstractEntity {
 	private void setUsername(String username) {
 		this.username = username;
 	}
-	
+	//checks that given password is correct for the user
+	//user.isMatchingPassword(someValue)
+	//maybe you need to use this method, and then use what it returns,
+	//maybe can't just call the method easily as you tried to.
 	public boolean isMatchingPassword(String password) {
 		return encoder.matches(password, pwHash);
 	}
-	
+	//will use this!
+	//checks that password meets minimum standards
 	public static boolean isValidPassword(String password) {
 		Pattern validUsernamePattern = Pattern.compile("(\\S){6,20}");
 		Matcher matcher = validUsernamePattern.matcher(password);
 		return matcher.matches();
 	}
 	
+	//checks that username meets minimum standards
 	public static boolean isValidUsername(String username) {
 		Pattern validUsernamePattern = Pattern.compile("[a-zA-Z][a-zA-Z0-9_-]{4,11}");
 		Matcher matcher = validUsernamePattern.matcher(username);
@@ -83,7 +93,7 @@ public class User extends AbstractEntity {
 	protected void addPost(Post post) {
 		posts.add(post);
 	}
-	
+	//onetomany = every one user will have many posts
 	@OneToMany
     @JoinColumn(name = "author_uid")
     public List<Post> getPosts() {
